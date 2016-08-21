@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购物车</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/data.js"></script>
+    <script src="../js/angular.js"></script>
+</head>
+<body ng-app="myApp">
+<div id="app" ng-controller="myCtrl">
+    <div class="products">
+        <div class="item">
+            <span>商品名称</span>
+            <span>商品单价</span>
+            <span>购买数量</span>
+            <span>操作</span>
+        </div>
+        <div class="item" ng-repeat="item in data">
+            <span>{{ item.name }}</span>
+            <span>{{ item.price }}</span>
+                <span>
+                    <em ng-class="{off:item.count == 1}" ng-click="reduce($index)">-</em>
+                    {{ item.count }}
+                    <em ng-class="{off: item.count == 10}" ng-click="add($index)">+</em>
+                </span>
+                <span>
+                    <i ng-click="remove($index)">移除</i>
+                </span>
+        </div>
+    </div>
+    <div class="info">
+        <label>收件人:</label>
+        <input type="text" placeholder="收件人姓名" ng-model="name">
+        <label>收货地址:</label>
+        <input type="text" placeholder="请填写收货地址" ng-model="address">
+    </div>
+    <div class="result" ng-show="data.length && name != '' && address != ''">
+        <h3>清单</h3>
+        商品总价: {{ price() }}
+        <br>
+        收件人:{{ name}}
+        <br>
+        收货地址: {{ address }}
+    </div>
+
+</div>
+<script>
+    var app = angular.module("myApp", []);
+    app.controller("myCtrl", function($scope) {
+        $scope.data = data;
+        $scope.name = '';
+        $scope.price = '';
+        $scope.price = function(){
+            var price = 0;
+            for (var i = 0; i < this.data.length; i++) {
+                var self = this.data[i];
+                price += self.price * self.count;
+            }
+            return price;
+        };
+        $scope.add = function(index){
+            var item = $scope.data[index];
+            if (item.count <10) {
+                item.count++;
+            }
+
+        };
+        $scope.reduce = function(index){
+            var item = this.data[index];
+            if (item.count > 1) {
+                item.count--;
+            }
+        };
+        $scope.remove = function(index){
+            $scope.data.splice(index,1);
+        }
+    });
+</script>
+
+</body>
+</html>
