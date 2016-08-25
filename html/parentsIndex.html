@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>parentsIndex</title>
+  <script src="../js/angular.js"></script>
+</head>
+<body ng-app="application.site">
+<div ng-controller="MainCtrl">
+  <dl ng-repeat="user in users">
+    <dt ng-init="p_index=$index">Name:{{ user.name }}</dt>
+    <dd ng-repeat="p in user.posts">父级INDEX:{{ p_index }} - {{ p }}
+      自己的INDEX:{{ $index }}
+    </dd>
+  </dl>
+</div>
+
+<script>
+  //在父级ng-repeat时利用ng-init写入一个变量即可，子循环是可以访问到的。
+  //$parent.$index可以直接获取父级$index。{{ $parent.$index }}
+  var site = angular.module('application.site', []);
+      site.controller('MainCtrl', ['$scope', '$http', function ($scope, $http) {
+        $scope.users = [
+          {name:"xialei",posts:["文章一","文章二","文章三"]},
+          {name:"zhangsan",posts:["文章四","文章五"]}
+        ];
+      }]);
+</script>
+</body>
+</html>

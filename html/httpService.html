@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>httpService</title>
+  <script src="../js/angular.js"></script>
+</head>
+<body ng-app="myApp">
+
+<div ng-controller="myCtrl">
+  <p>欢迎信息:</p>
+  <h1>{{myWelcome}}</h1>
+</div>
+<div ng-controller="customersCtrl">
+  <ul>
+    <li ng-repeat="x in names">
+      {{ x.Name + ', ' + x.Country }}
+    </li>
+  </ul>
+</div>
+<script>
+  var app = angular.module('myApp',[]);
+      app.controller('myCtrl', function ($scope,$http) {
+        //$http 服务向服务器请求信息，返回的值放入变量 "myWelcome" 中。
+        $http.get('welcome.html').then(function(response){
+          $scope.myWelcome = response.data;
+        });
+      });
+      app.controller('customersCtrl',function($scope,$http){
+        $http.get("httpResource.json")
+            .success(function(response) {$scope.names = response.records;});
+      })
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LocationService</title>
+  <script src="../js/angular.js"></script>
+</head>
+<body>
+<div ng-app="myApp" ng-controller="myCtrl">
+  <p> 当前页面的url:</p>
+  <h3>{{myUrl}}</h3>
+  <h3>{{ myHost }}</h3>
+</div>
+
+<script>
+  var app = angular.module('myApp',[]);
+      app.controller('myCtrl',function($scope,$location){
+        $scope.myUrl =  $location.absUrl();
+        $scope.myHost = $location.host();
+      })
+</script>
+</body>
+</html>

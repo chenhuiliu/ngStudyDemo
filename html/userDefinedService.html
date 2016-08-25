@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>userDefinedService</title>
+  <script src="../js/angular.js"></script>
+</head>
+<body>
+<div ng-app="myApp" ng-controller="myCtrl">
+
+  <p>255 的16进制是:</p>
+
+  <h1>{{hex}}</h1>
+  在过滤器中使用服务:
+
+  <h1>{{255 | myFormat}}</h1>
+
+  <ul>
+    <li ng-repeat="x in counts">{{x | myFormat}}</li>
+  </ul>
+
+</div>
+
+<script>
+  var app = angular.module('myApp', []);
+
+  //自定义服务，用于转换16进制数：
+  app.service('hexafy', function() {
+    this.myFunc = function (x) {
+      return x.toString(16);
+    }
+  });
+  app.controller('myCtrl', function($scope, hexafy) {
+    $scope.hex = hexafy.myFunc(255);
+  });
+  //在过滤器中使用服务:
+  app.filter('myFormat',['hexafy', function(hexafy) {
+    return function(x) {
+      return hexafy.myFunc(x);
+    };
+  }]);
+  //在获取数组 [255, 251, 200] 值时使用过滤器:
+  app.controller('myCtrl', function($scope) {
+    $scope.counts = [255, 251, 200];
+  });
+</script>
+</body>
+</html>
